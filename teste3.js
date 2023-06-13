@@ -1,15 +1,22 @@
-var data =  require("./fakeData");
+var data = require('./fakeData');
 
-module.exports = function(req, res) {
-  
-    var name =  req.query.name;
+module.exports = function (req, res) {
+  var id = req.query.id;
 
-    for(let i = 0; i < data.length;  i++) {
-        if(i.name == name) {
-            data[i] = null;
-        }
-    }
+  if (!id) {
+    return res.status(400).json({
+      error: 'Missing user id parameter',
+    });
+  }
 
-    res.send("success");
+  const indexOfUser = data.map((el) => el.id).indexOf(Number(id));
 
+  if (indexOfUser === -1) {
+    return res.status(404).json({ error: 'User not found' });
+  }
+
+  data = data.filter((el) => el.id !== Number(id));
+  res.status(200).json({
+    message: 'success',
+  });
 };

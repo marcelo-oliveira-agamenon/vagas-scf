@@ -1,17 +1,21 @@
-var data =  require("./fakeData");
+var data = require('./fakeData');
 
-module.exports = function(req, res){
-  
-    var name =  req.body.name;
-    var jov =  req.body.job;
-    
-    var newUser = {
-        name: name,
-        job: job,
-    }
+module.exports = function (req, res) {
+  var name = req.body.name;
+  var job = req.body.job;
 
-    data.push(newUser)
-    
-    res.send(newUser);
+  if (!name || !job) {
+    return res.status(400).json({
+      error: 'Missing parameters on body',
+    });
+  }
 
+  var newUser = {
+    id: data.length + 1,
+    name,
+    job,
+  };
+
+  data.push(newUser);
+  return res.status(201).send(newUser);
 };

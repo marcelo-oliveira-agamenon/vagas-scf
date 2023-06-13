@@ -1,24 +1,30 @@
-var data =  require("./fakeData");
+var data = require('./fakeData');
 
-const getUser = ( req, res, next ) => {
-    
-    var name =  req.query.name;
+const getUser = (req, res, next) => {
+  var id = req.query.id;
 
-    for(let i = 0; i < data.length;  i++) {
-        if(i.name == name) {
-            res.send(data[i]);
-        }
+  if (!id) {
+    return res.status(400).json({
+      error: 'Missing user id parameter',
+    });
+  }
+
+  var user;
+  for (let i = 0; i < data.length; i++) {
+    if (data[i].id === Number(id)) {
+      user = data[i];
+      break;
     }
+  }
 
+  return res.status(200).send(user);
 };
 
-const getUsers = ( req, res, next ) => {
-    
-    res.send(data);
-    
+const getUsers = (req, res, next) => {
+  res.send(data);
 };
 
 module.exports = {
-    getUser,
-    getUsers
+  getUser,
+  getUsers,
 };
