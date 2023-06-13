@@ -12,7 +12,9 @@ const getUser = (req, res, next) => {
   var user;
   for (let i = 0; i < data.length; i++) {
     if (data[i].id === Number(id)) {
+      data[i].viewCount = data[i].viewCount + 1;
       user = data[i];
+
       break;
     }
   }
